@@ -2,7 +2,7 @@ let points = [];
 let fallPalette;
 
 function setup() {
-  createCanvas(900, 900);
+  createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   background(0);
   stroke(255);
@@ -11,9 +11,9 @@ function setup() {
   fallPalette = [
     color(231, 117, 100),
     color(251, 119, 60),
-    color(235, 54, 120), 
-    color(79, 23, 135),  
-    color(24, 1, 97), 
+    color(235, 54, 120),
+    color(79, 23, 135),
+    color(24, 1, 97),
   ];
 
   for (let i = 0; i < 500; i++) {
@@ -24,7 +24,7 @@ function setup() {
 }
 
 function draw() {
-  background(0, 15); 
+  background(0, 15);
   strokeWeight(1);
   
   for (let pt of points) {
@@ -34,7 +34,7 @@ function draw() {
 
 function backInTheDay(pt) {
   let { x, y, c, scl, rnd } = pt;
-  let col = random(fallPalette); 
+  let col = random(fallPalette);
   stroke(col);
   noFill();
 
@@ -75,4 +75,8 @@ function backInTheDay(pt) {
     }
   }
   endShape();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
