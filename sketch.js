@@ -28,11 +28,11 @@ function draw() {
   strokeWeight(1);
   
   for (let pt of points) {
-    backInTheDay(pt);
+    sweety(pt);
   }
 }
 
-function backInTheDay(pt) {
+function sweety(pt) {
   let { x, y, c, scl, rnd } = pt;
   let col = random(fallPalette);
   stroke(col);
