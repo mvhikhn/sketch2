@@ -1,13 +1,19 @@
 let points = [];
 let fallPalette;
+let targetWidth = 800;
+let targetHeight = 800;
+let canvas;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(targetWidth, targetHeight);
+  canvas.elt.style.display = 'block';
+  canvas.elt.style.maxWidth = '100%';
+  canvas.elt.style.height = 'auto';
+  customResizeCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   background(0);
   stroke(255);
   colorMode(RGB);
-
   fallPalette = [
     color(231, 117, 100),
     color(251, 119, 60),
@@ -15,18 +21,12 @@ function setup() {
     color(79, 23, 135),
     color(24, 1, 97),
   ];
-
-  for (let i = 0; i < 500; i++) {
-    let x = randomGaussian(0.5, 0.13) * width;
-    let y = randomGaussian(0.5, 0.13) * height;
-    points.push({ x, y, c: int(random(10, 50)), scl: 0.005, rnd: int(random(4)) });
-  }
+  generatePoints();
 }
 
 function draw() {
   background(0, 15);
   strokeWeight(1);
-  
   for (let pt of points) {
     sweety(pt);
   }
@@ -37,7 +37,6 @@ function sweety(pt) {
   let col = random(fallPalette);
   stroke(col);
   noFill();
-
   beginShape();
   if (rnd === 0) {
     for (let i = 0; i < c; i++) {
@@ -78,5 +77,44 @@ function sweety(pt) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  customResizeCanvas(windowWidth, windowHeight);
+}
+
+function customResizeCanvas(w, h) {
+  let aspectRatio = targetWidth / targetHeight;
+  let newWidth, newHeight;
+  
+  if (w / h > aspectRatio) {
+    newHeight = h;
+    newWidth = h * aspectRatio;
+  } else {
+    newWidth = w;
+    newHeight = w / aspectRatio;
+  }
+ 
+  newWidth = min(newWidth, targetWidth);
+  newHeight = min(newHeight, targetHeight);
+  
+  let offsetX = 0;
+  let offsetY = 0;
+  
+  resizeCanvas(newWidth, newHeight);
+  if (canvas && canvas.elt) {
+    canvas.elt.style.position = 'absolute';
+    canvas.elt.style.left = `${offsetX}px`;
+    canvas.elt.style.top = `${offsetY}px`;
+    canvas.elt.style.width = `${newWidth}px`;
+    canvas.elt.style.height = `${newHeight}px`;
+  }
+  
+  generatePoints();
+}
+
+function generatePoints() {
+  points = [];
+  for (let i = 0; i < 200; i++) { 
+    let x = randomGaussian(0.5, 0.13) * width;
+    let y = randomGaussian(0.5, 0.13) * height;
+    points.push({ x, y, c: int(random(10, 30)), scl: 0.005, rnd: int(random(4)) }); 
+  }
 }
